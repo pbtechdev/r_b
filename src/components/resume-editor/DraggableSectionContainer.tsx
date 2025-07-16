@@ -52,7 +52,7 @@ const DraggableSectionContainer: React.FC<DraggableSectionProps> = ({
           </div>
           <EditableTitle
             className="font-semibold text-lg"
-            title="Product Information"
+            title={section.title}
             onChange={onChangeTitle}
           />
         </div>

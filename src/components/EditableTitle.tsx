@@ -45,7 +45,8 @@ const EditableTitle: React.FC<EditableTitleProps> = ({
         <input
           name="title"
           autoFocus
-          onClick={(e)=>e.stopPropagation()}
+          onFocus={(e) => e.target.select()}
+          onClick={(e) => e.stopPropagation()}
           value={inputValue}
           onChange={handleChange}
           onBlur={handleBlur}
