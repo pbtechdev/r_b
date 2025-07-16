@@ -1,19 +1,22 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { GripVertical } from "lucide-react";
 import type { ResumeSection } from "../../types/resume";
 import { AccordionItem, AccordionTrigger } from "../ui/accordion";
 import { cn } from "@/lib/utils";
+import EditableTitle from "../EditableTitle";
 
 interface DraggableSectionProps {
   section: ResumeSection;
   children: React.ReactNode;
+  onChangeTitle: (newTitle: string) => void;
 }
 
-export const DraggableSection: React.FC<DraggableSectionProps> = ({
+const DraggableSectionContainer: React.FC<DraggableSectionProps> = ({
   section,
   children,
+  onChangeTitle,
 }) => {
   const {
     attributes,
@@ -47,10 +50,16 @@ export const DraggableSection: React.FC<DraggableSectionProps> = ({
               className="text-gray-400 hover:text-primary cursor-grab active:cursor-grabbing"
             />
           </div>
-          <span className="font-semibold text-lg">Product Information</span>
+          <EditableTitle
+            className="font-semibold text-lg"
+            title="Product Information"
+            onChange={onChangeTitle}
+          />
         </div>
       </AccordionTrigger>
       {children}
     </AccordionItem>
   );
 };
+
+export default DraggableSectionContainer;

@@ -1,9 +1,4 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../ui/accordion";
+import { Accordion, AccordionContent } from "@/components/ui/accordion";
 import {
   DndContext,
   closestCenter,
@@ -11,6 +6,7 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
+  type DragEndEvent,
 } from "@dnd-kit/core";
 import {
   arrayMove,
@@ -18,9 +14,11 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { DraggableSection } from "./DraggableSection";
+import DraggableSectionContainer from "./DraggableSectionContainer";
 import type { ResumeSection } from "@/types/resume";
-import { GripVertical } from "lucide-react";
+import SectionContainer from "./SectionContainer";
+import { PersonalDetailsSection } from "./sections/PersonalDetailsSection";
+import { ProfessionalSummarySection } from "./sections/ProfessionalSummarySection";
 interface ResumeEditorProps {
   resumeHook: ReturnType<
     typeof import("../../hooks/useResumeData").useResumeData
@@ -37,7 +35,7 @@ const ResumeEditor: React.FC<ResumeEditorProps> = ({ resumeHook }) => {
     })
   );
 
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
 
     if (!over) return;
@@ -79,51 +77,26 @@ const ResumeEditor: React.FC<ResumeEditorProps> = ({ resumeHook }) => {
 
   return (
     <Accordion type="multiple" className="py-2 flex flex-col gap-2">
-      <AccordionItem value="item-1" className="bg-white rounded-md pl-2 pr-4">
-        <AccordionTrigger className="hover:no-underline cursor-pointer">
-          <div className="flex gap-1 justify-center items-center">
-            <GripVertical
-              size={18}
-              className="text-gray-400 hover:text-primary opacity-0"
-            />
-            <span className="font-semibold text-lg">Product Information</span>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="flex flex-col gap-4 text-balance">
-          <p>
-            Our flagship product combines cutting-edge technology with sleek
-            design. Built with premium materials, it offers unparalleled
-            performance and reliability.
-          </p>
-          <p>
-            Key features include advanced processing capabilities, and an
-            intuitive user interface designed for both beginners and experts.
-          </p>
-        </AccordionContent>
-      </AccordionItem>
-
-      <AccordionItem value="item-2" className="bg-white rounded-md pl-2 pr-4">
-        <AccordionTrigger className="hover:no-underline cursor-pointer">
-          <div className="flex gap-1 justify-center items-center">
-            <GripVertical
-              size={18}
-              className="text-gray-400 hover:text-primary opacity-0"
-            />
-            <span className="font-semibold text-lg">Product Information</span>
-          </div>
-        </AccordionTrigger>
-        <AccordionContent className="flex flex-col gap-4 text-balance">
-          <p>
-            Our flagship product combines cutting-edge technology with sleek
-            design. Built with premium materials, it offers unparalleled
-            performance and reliability.
-          </p>
-          <p>
-            Key features include advanced processing capabilities, and an
-            intuitive user interface designed for both beginners and experts.
-          </p>
-        </AccordionContent>
-      </AccordionItem>
+      <SectionContainer
+        value="item-1"
+        title="Personal details"
+        onChangeTitle={() => {}}
+      >
+        <PersonalDetailsSection
+          onUpdate={() => {}}
+          personalDetails={resumeData.personalDetails}
+        />
+      </SectionContainer>
+      <SectionContainer
+        value="item-2"
+        title="Professional Summary"
+        onChangeTitle={() => {}}
+      >
+        <ProfessionalSummarySection
+          onUpdate={() => {}}
+          summary={resumeData.professionalSummary}
+        />
+      </SectionContainer>
 
       {/** Sortable Accordions */}
       <DndContext
@@ -136,9 +109,13 @@ const ResumeEditor: React.FC<ResumeEditorProps> = ({ resumeHook }) => {
           strategy={verticalListSortingStrategy}
         >
           {sortableSections.map((section) => (
-            <DraggableSection key={section.id} section={section}>
+            <DraggableSectionContainer
+              key={section.id}
+              section={section}
+              onChangeTitle={() => {}}
+            >
               {renderSection(section)}
-            </DraggableSection>
+            </DraggableSectionContainer>
           ))}
         </SortableContext>
       </DndContext>

@@ -8,6 +8,7 @@ export interface PersonalDetails {
   country: string;
   postalCode: string;
   jobTitle: string;
+  profilePic:string;
 }
 
 export interface ProfessionalSummary {

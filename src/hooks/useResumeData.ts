@@ -11,7 +11,8 @@ const initialResumeData: ResumeData = {
     city: '',
     country: '',
     postalCode: '',
-    jobTitle: ''
+    jobTitle: '',
+    profilePic:''
   },
   professionalSummary: {
     summary: ''
